@@ -8,15 +8,14 @@ struct Node
     t value;
     Node<t>* next;
     Node<t>* before;
-    Node(t value,Node<t>* next,Node<t>* before){
-        this->value=value;
-        this->next=next;
-        this->before=before;
-    }
+    int col;
+    int row;
     Node(t value){
         this->value=value;
         this->next=NULL;
         this->before=NULL;
+        this->col=-1;
+        this->row=-1;
     }
 
 };
@@ -74,7 +73,48 @@ public:
             return;
             
         }
+    }
+
+     //Funcion extra para la estructura
+    Node<t>* getNode(int index){
+        if(index <= 0 || index > this->lenght) return NULL;
+        pos temp=getFirst();
+        for (int i = 1; i < index; i++)
+        {
+            this->Next(temp);
+        }
+        return temp;
+    }
+    Node<t>* getNodeForValue(int value){
+        pos temp=getFirst();
+        while (temp != NULL)
+        {
+            if(temp->value == value) return temp;
+            this->Next(temp);
+        }
+        
+        return NULL;
     };
+
+    bool isRepeatValue(t value){
+        pos temp=this->getFirst();
+        while (temp != NULL)
+        {
+            if(temp->value==value) return true;
+            this->Next(temp);
+        }
+        return false;
+    }
+
+    void printVartices(){
+        pos temp=getFirst();
+        while (temp != NULL)
+        {
+            cout<<"vertice: "<<temp->value<<" index: "<<temp->row<<endl;
+            this->Next(temp);
+        }
+        
+    }
 
 };
 
@@ -154,4 +194,3 @@ void Doubly<t>::deleteNodo(pos nodo){
     lenght--;
 
 }
-
