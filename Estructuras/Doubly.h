@@ -5,18 +5,52 @@ using namespace std;
 template<typename  t>
 struct Node
 {
-    t value;
-    Node<t>* next;
-    Node<t>* before;
-    int col;
-    int row;
-    Node(t value){
-        this->value=value;
-        this->next=NULL;
-        this->before=NULL;
-        this->col=-1;
-        this->row=-1;
-    }
+    private:
+        int const step=4;
+    public:
+        t value;
+        Node<t>* next;
+        Node<t>* before;
+        Node<t>** roads;
+        int index;
+        int length;
+        Node(t value){
+            this->value=value;
+            this->next=NULL;
+            this->before=NULL;
+            this->roads=NULL;
+            this->index=-1;
+            this->length=0;
+        }
+       
+        void insertRoads(Node<t>* vertex){
+            if( length == 0){
+                this->roads= new Node<t>*[10];
+                this->roads[0]=vertex;
+                length++;
+            }
+
+            if(length%step!=0){
+                this->roads[length+1]=vertex;
+                this->length++;
+                return;
+            }
+            this->resize();
+            this->roads[length+1]=vertex;
+            this->length++;
+        }
+
+    private:
+        void resize(){
+            Node<t>** newArry=new Node<int>*[this->length+4];
+            for (int i = 0; i < this->length; i++)
+            {
+                newArry[i]=this->roads[i];
+            }
+            this->length+=4;
+            this->roads=newArry;
+
+        }
 
 };
 
@@ -110,7 +144,7 @@ public:
         pos temp=getFirst();
         while (temp != NULL)
         {
-            cout<<"vertice: "<<temp->value<<" index: "<<temp->row<<endl;
+            cout<<"vertice: "<<temp->value<<" index: "<<temp->index<<endl;
             this->Next(temp);
         }
         

@@ -6,7 +6,7 @@ using namespace std;
 
 class Dirt_Roads
 {
-private:
+public:
     int len_dungueons;
     int power_aventurer;
     int len_conections;
@@ -78,8 +78,7 @@ public:
             res=input;
             if(!(this->Dungeons.isRepeatValue(input))){
                 this->Dungeons.insert(input,this->Dungeons.getLast(),0);
-                this->Dungeons.getLast()->row=index;
-                this->Dungeons.getLast()->col=index;
+                this->Dungeons.getLast()->index=index;
                 index++;
             }
 
@@ -88,7 +87,8 @@ public:
     void inputGraph(string name){
         ifstream file(name.c_str());
         int input,arg,index=0,n=-1,m=-1;
-    
+        Node<int>* temp1;
+        Node<int>* temp2;
         if (file.is_open())
         {
 
@@ -107,7 +107,12 @@ public:
                     this->inputFill(index,file,n);  
                     this->inputFill(index,file,m);
                     file>>input;
-                    this->setRoadsValue(this->Dungeons.getNodeForValue(n)->row,this->Dungeons.getNodeForValue(m)->col,input);
+                    temp1=this->Dungeons.getNodeForValue(n);
+                    temp2=this->Dungeons.getNodeForValue(m);
+                    this->setRoadsValue(temp1->index,temp2->index,input);
+                    this->setRoadsValue(temp2->index,temp1->index,input);
+                    temp1->insertRoads(temp2);
+                    temp2->insertRoads(temp1);
                 }
            }
            
@@ -140,6 +145,8 @@ int main(int argc, char const *argv[])
     string a="output.txt";
     A.inputGraph(a);
     A.printRoads();
-  
+    // cout<<A.Dungeons.getFirst()->roads[0]<<endl;
+    // cout<<A.Dungeons.getFirst()->value<<endl;
+    // cout<<A.Dungeons.getFirst()->roads[0]->value<<endl;
     return 0;
 }
